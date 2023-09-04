@@ -1,0 +1,36 @@
+.questionCardWrapper {
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 3px;
+    background-color: #fff;
+
+    &:hover {
+        box-shadow: 0 4px 10px #e8e8e8;
+        cursor: pointer;
+    }
+
+    .title {
+        .right {
+            text-align: right;
+            font-size: 12px;
+            span {
+                margin-right: 10px;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+
+.container {
+    display: flex;
+    text-align: left;
+    .left,
+    .right {
+        flex: 1;
+    }
+    .right {
+        text-align: right;
+    }
+}

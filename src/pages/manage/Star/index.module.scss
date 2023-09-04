@@ -1,0 +1,24 @@
+.container {
+    text-align: left;
+    .header {
+        display: flex;
+        margin-bottom: 20px;
+        .left,
+        .right {
+            flex: 1;
+        }
+        .right {
+            text-align: right;
+        }
+        h3 {
+            margin: 0;
+        }
+    }
+
+    .content {
+        margin-bottom: 20px;
+    }
+    .footer {
+        
+    }
+}
