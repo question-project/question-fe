@@ -2,14 +2,8 @@ import React, { FC, useState } from 'react'
 import styles from './index.module.scss'
 import { useTitle } from 'ahooks'
 import { Empty, Input, Space, Table, Tag, Typography, Button, Modal } from 'antd'
-import {
-    EditOutlined,
-    LineChartOutlined,
-    StarOutlined,
-    CopyOutlined,
-    DeleteOutlined,
-    ExclamationCircleOutlined,
-} from '@ant-design/icons'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import ListSearch from '../../../components/ListSearch'
 const list1 = [
     {
         _id: 'q1',
@@ -108,7 +102,7 @@ const Trash: FC = () => {
                     <Typography.Title level={3}>星标问卷</Typography.Title>
                 </div>
                 <div className={styles.right}>
-                    <Input />
+                    <ListSearch />
                 </div>
             </div>
 

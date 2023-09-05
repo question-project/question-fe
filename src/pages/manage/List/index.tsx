@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import QuestionCard from '../../../components/QuestionCard'
 import { useTitle } from 'ahooks'
 import { Typography } from 'antd'
+import ListSearch from '../../../components/ListSearch'
 
 const questionList = [
     {
@@ -45,13 +46,13 @@ const List: FC = () => {
     const [list] = useState(questionList)
 
     return (
-        <div className={styles.listWrapper}>
+        <>
             <div className={styles.header}>
                 <div className={styles.left}>
                     <Typography.Title level={3}>我的问卷</Typography.Title>
                 </div>
                 <div className={styles.right}>
-                    <input />
+                    <ListSearch />
                 </div>
             </div>
             <div className={styles.content}>
@@ -62,7 +63,7 @@ const List: FC = () => {
                     })}
             </div>
             <div className={styles.footer}>load more</div>
-        </div>
+        </>
     )
 }
 export default List

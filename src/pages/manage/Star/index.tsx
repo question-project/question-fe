@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react'
 import styles from './index.module.scss'
 import { useTitle } from 'ahooks'
-import { Empty, Input, Typography } from 'antd'
+import { Empty, Typography } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
+import ListSearch from '../../../components/ListSearch'
 const starList = [
     {
         _id: 'q1',
@@ -39,7 +40,7 @@ const Star: FC = () => {
                     <Typography.Title level={3}>星标问卷</Typography.Title>
                 </div>
                 <div className={styles.right}>
-                    <Input />
+                    <ListSearch />
                 </div>
             </div>
             <div className={styles.content}>
