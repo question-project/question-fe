@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react'
 import styles from './index.module.scss'
 import { UserAddOutlined } from '@ant-design/icons'
-import { Space, Typography, Form, Input, Button, Checkbox } from 'antd'
-import { Link } from 'react-router-dom'
-import { REGISTER_PATHNAME } from '../../router'
+import { Space, Typography, Form, Input, Button, Checkbox, message } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../../router'
+import { useRequest } from 'ahooks'
+import { loginService } from '../../services/user'
+
 const { Title } = Typography
 const USERNAME_KEY = 'USERNAME'
 const PASSWORD_KEY = 'PASSWORD'
@@ -24,6 +27,8 @@ const getUserInfoFromStorage = () => {
 }
 
 const Login: FC = () => {
+    const nav = useNavigate()
+
     const [form] = Form.useForm()
 
     useEffect(() => {
@@ -33,12 +38,28 @@ const Login: FC = () => {
 
     const onFinish = (values: any) => {
         const { username, password } = values || {}
+        run(username, password)
         if (values.remember) {
             rememberUser(username, password)
         } else {
             delUserFromStorage()
         }
     }
+
+    const { run } = useRequest(
+        async (username: string, password: string) => {
+            await loginService(username, password)
+        },
+        {
+            manual: true,
+            onSuccess: res => {
+                const { token } = res
+                message.success('登录成功')
+                nav(MANAGE_INDEX_PATHNAME)
+            },
+        }
+    )
+
     return (
         <div className={styles.container}>
             <div>

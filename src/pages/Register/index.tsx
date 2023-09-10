@@ -1,15 +1,30 @@
 import React, { FC } from 'react'
 import styles from './index.module.scss'
 import { UserAddOutlined } from '@ant-design/icons'
-import { Space, Typography, Form, Input, Button } from 'antd'
-import { Link } from 'react-router-dom'
+import { Space, Typography, Form, Input, Button, message } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 import { LOGIN_PATHNAME } from '../../router'
+import { useRequest } from 'ahooks'
+import { registerService } from '../../services/user'
 const { Title } = Typography
 
 const Register: FC = () => {
-    const onFinish = (values: any) => {
-        console.log(values)
-    }
+    const nav = useNavigate()
+
+    const { run: onFinish } = useRequest(
+        async values => {
+            const { username, password, nickname } = values
+            return await registerService(username, password, nickname)
+        },
+        {
+            manual: true,
+            onSuccess: () => {
+                message.success('注册成功')
+                nav(LOGIN_PATHNAME)
+            },
+        }
+    )
+
     return (
         <div className={styles.container}>
             <div>
@@ -49,7 +64,7 @@ const Register: FC = () => {
                             ({ getFieldValue }) => ({
                                 validator: (_, value) => {
                                     if (!value || getFieldValue('password') === value) {
-                                        return Promise.reject()
+                                        return Promise.resolve()
                                     }
                                     return Promise.reject(new Error('两次密码不一致'))
                                 },
