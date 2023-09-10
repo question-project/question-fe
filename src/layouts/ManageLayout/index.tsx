@@ -3,10 +3,25 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styles from './index.module.scss'
 import { Button, Divider, Space } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons'
+import { createQuestionService } from '../../services/question'
+import { useRequest } from 'ahooks'
 
 const ManageLayout: FC = () => {
     const nav = useNavigate()
+
     const { pathname } = useLocation()
+
+    const {
+        loading,
+        error,
+        run: onCreate,
+    } = useRequest(createQuestionService, {
+        manual: true,
+        onSuccess: res => {
+            nav(`/question/edit/${res.id}`)
+        },
+    })
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -15,9 +30,8 @@ const ManageLayout: FC = () => {
                         type="primary"
                         size="large"
                         icon={<PlusOutlined />}
-                        onClick={() => {
-                            //
-                        }}
+                        onClick={onCreate}
+                        disabled={loading}
                     >
                         创建问卷
                     </Button>

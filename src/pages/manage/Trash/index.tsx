@@ -4,36 +4,15 @@ import { useTitle } from 'ahooks'
 import { Empty, Input, Space, Table, Tag, Typography, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../../components/ListSearch'
-const list1 = [
-    {
-        _id: 'q1',
-        title: '问卷1',
-        isPublished: true,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 1,
-    },
-    {
-        _id: 'q2',
-        title: '问卷2',
-        isPublished: false,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 2,
-    },
-    {
-        _id: 'q3',
-        title: '问卷3',
-        isPublished: false,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 3,
-    },
-]
+import useLoadQuestionListData from '../../../hook/useLoadQuestionListData'
+import ListPage from '../../../components/ListPage'
+
 const Trash: FC = () => {
     useTitle('问卷 - 回收站')
 
-    const [list] = useState(list1)
+    const { data, loading } = useLoadQuestionListData({ isDeleted: true })
+
+    const { list = [], total } = data
 
     const columns = [
         {
@@ -109,7 +88,11 @@ const Trash: FC = () => {
             <div className={styles.content}>
                 {!list.length && <Empty description={'暂无数据'} />}
 
-                {list.length && <TableElem />}
+                {!!list.length && <TableElem />}
+            </div>
+
+            <div className={styles.footer}>
+                <ListPage total={total} />
             </div>
         </div>
     )

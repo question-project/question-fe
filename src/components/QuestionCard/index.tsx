@@ -60,7 +60,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
                             type="text"
                             size="small"
                             icon={<EditOutlined />}
-                            onClick={() => nav(`question/edit/${_id}`)}
+                            onClick={() => nav(`/question/edit/${_id}`)}
                         >
                             编辑问卷
                         </Button>
@@ -68,7 +68,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
                             type="text"
                             size="small"
                             icon={<LineChartOutlined />}
-                            onClick={() => nav(`question/stat/${_id}`)}
+                            onClick={() => nav(`/question/stat/${_id}`)}
                             disabled={!isPublished}
                         >
                             数据统计

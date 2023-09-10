@@ -1,38 +1,19 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import styles from './index.module.scss'
 import { useTitle } from 'ahooks'
 import { Empty, Typography } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
 import ListSearch from '../../../components/ListSearch'
-const starList = [
-    {
-        _id: 'q1',
-        title: '问卷1',
-        isPublished: true,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 1,
-    },
-    {
-        _id: 'q2',
-        title: '问卷2',
-        isPublished: false,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 2,
-    },
-    {
-        _id: 'q3',
-        title: '问卷3',
-        isPublished: false,
-        isStar: true,
-        createdAt: new Date().getTime().toString(),
-        answerCount: 3,
-    },
-]
+import useLoadQuestionListData from '../../../hook/useLoadQuestionListData'
+import ListPage from '../../../components/ListPage'
+
 const Star: FC = () => {
-    const [list] = useState(starList)
     useTitle('问卷 - 星标问卷')
+
+    const { data, loading } = useLoadQuestionListData({ isStar: true })
+
+    const { list = [], total } = data
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -45,13 +26,15 @@ const Star: FC = () => {
             </div>
             <div className={styles.content}>
                 {!!list.length &&
-                    list.map(item => {
+                    list.map((item: any) => {
                         const { _id } = item
                         return <QuestionCard key={_id} {...item} />
                     })}
                 {!list.length && <Empty description={'暂无数据'} />}
             </div>
-            <div className={styles.footer}></div>
+            <div className={styles.footer}>
+                <ListPage total={total} />
+            </div>
         </div>
     )
 }
