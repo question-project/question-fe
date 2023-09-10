@@ -1,16 +1,17 @@
 import React, { FC, useState } from 'react'
 import styles from './index.module.scss'
-import { useTitle } from 'ahooks'
-import { Empty, Input, Space, Table, Tag, Typography, Button, Modal } from 'antd'
+import { useRequest, useTitle } from 'ahooks'
+import { Empty, Space, Table, Tag, Typography, Button, Modal, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../../components/ListSearch'
 import useLoadQuestionListData from '../../../hook/useLoadQuestionListData'
 import ListPage from '../../../components/ListPage'
+import { deleteQuestionService, updateQuestionService } from '../../../services/question'
 
 const Trash: FC = () => {
     useTitle('问卷 - 回收站')
 
-    const { data, loading } = useLoadQuestionListData({ isDeleted: true })
+    const { data, loading, refresh } = useLoadQuestionListData({ isDeleted: true })
 
     const { list = [], total } = data
 
@@ -38,22 +39,55 @@ const Trash: FC = () => {
 
     const [selectedIds, setSelectedIds] = useState<string[] | []>([])
 
+    const reload = () => {
+        refresh()
+        setSelectedIds([])
+    }
     const del = () => {
         Modal.confirm({
             title: '确认彻底删除该问卷？',
             icon: <ExclamationCircleOutlined />,
             content: '删除后不可找回',
-            onOk: () => {
-                alert(`del JSON.stringify(selectedIds`)
-            },
+            onOk: deleteQuestion,
         })
     }
+
+    const { run: recover } = useRequest(
+        async () => {
+            for await (const id of selectedIds) {
+                await updateQuestionService(id, { isDeleted: false })
+            }
+        },
+        {
+            manual: true,
+            // 防抖
+            debounceWait: 500,
+            onSuccess: () => {
+                message.success('恢复成功')
+                // 手动刷新列表
+                reload()
+            },
+        }
+    )
+
+    // 删除
+    const { run: deleteQuestion } = useRequest(async () => deleteQuestionService(selectedIds), {
+        manual: true,
+        onSuccess: () => {
+            message.success('删除成功')
+            reload()
+        },
+    })
 
     const TableElem = () => (
         <>
             <div style={{ marginBottom: '16px', textAlign: 'left' }}>
                 <Space>
-                    <Button type="primary" disabled={!selectedIds.length}>
+                    <Button
+                        type="primary"
+                        disabled={!selectedIds.length || loading}
+                        onClick={recover}
+                    >
                         恢复
                     </Button>
                     <Button danger disabled={!selectedIds.length} onClick={del}>

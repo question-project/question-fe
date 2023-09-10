@@ -17,6 +17,8 @@ const useLoadQuestionListData = (params?: Partial<SearchOption>) => {
         data = {},
         loading,
         error,
+        // 手动刷新
+        refresh,
     } = useRequest(
         async () => {
             const keyword = searchParam.get(LIST_SEARCH_PARAM_KEY) || ''
@@ -32,7 +34,7 @@ const useLoadQuestionListData = (params?: Partial<SearchOption>) => {
         }
     )
 
-    return { data, loading, error }
+    return { data, loading, error, refresh }
 }
 
 export default useLoadQuestionListData
