@@ -53,7 +53,7 @@ const Login: FC = () => {
         {
             manual: true,
             onSuccess: res => {
-                const { token } = res
+                // const { token } = res
                 message.success('登录成功')
                 nav(MANAGE_INDEX_PATHNAME)
             },

@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import styles from './index.module.scss'
 import { Button, Typography } from 'antd'
 const { Title, Paragraph } = Typography
-
 const Home: FC = () => {
     return (
         <div className={styles.container}>

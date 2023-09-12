@@ -4,9 +4,14 @@ import styles from './index.module.scss'
 import { Layout } from 'antd'
 import Logo from '../../components/Logo'
 import UserInfo from '../../components/UserInfo'
+import useLoadUserData from '../../hook/useLoadUserData'
+import useNavPage from '../../hook/useNavPage'
 const { Header, Footer, Content } = Layout
 
 const MainLayout: FC = () => {
+    const { waiting } = useLoadUserData()
+    useNavPage(waiting)
+
     return (
         <Layout>
             <Header className={styles.header}>
@@ -17,9 +22,7 @@ const MainLayout: FC = () => {
                     <UserInfo />
                 </div>
             </Header>
-            <Content className={styles.main}>
-                <Outlet />
-            </Content>
+            <Content className={styles.main}>{!waiting && <Outlet />}</Content>
             <Footer className={styles.footer}>
                 问卷&copy; 2023 - present. Created by wangqiaoqiao
             </Footer>
