@@ -10,7 +10,10 @@ const QuestionLayout: FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.left}> QuestionLayout left</div>
-            <div className={styles.right}>{waiting && <Outlet />}</div>
+            {/* <div className={styles.right}>{waiting && <Outlet />}</div> */}
+            <div className={styles.right}>
+                <Outlet />
+            </div>
         </div>
     )
 }

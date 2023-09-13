@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 import styles from './index.module.scss'
 import useLoadQuestionData from '../../../hook/useLoadQuestionData'
+import { EditCanvas } from './EditCanvas'
 
 const Edit: FC = () => {
-    const { data } = useLoadQuestionData()
+    const { loading } = useLoadQuestionData()
 
     return (
         <div className={styles.container}>
@@ -15,7 +16,9 @@ const Edit: FC = () => {
 
                     <div className={styles.main}>
                         <div className={styles.canvasWrapper}>
-                            <div style={{ height: '900px' }}>{JSON.stringify(data)}</div>
+                            <div style={{ height: '900px' }}>
+                                <EditCanvas loading={loading} />
+                            </div>
                         </div>
                     </div>
 
