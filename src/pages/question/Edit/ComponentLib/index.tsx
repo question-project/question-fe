@@ -1,16 +1,28 @@
 import React, { FC } from 'react'
-import { componentConfGroup } from '../../../../components/QuestionComponents'
+import { ComponentConfType, componentConfGroup } from '../../../../components/QuestionComponents'
 import { Typography } from 'antd'
+import styles from './index.module.scss'
 
 interface ComponentLibProps {
     [key: string]: any
+}
+
+const genComponent = (component: ComponentConfType) => {
+    const { Component } = component
+    return (
+        <div className={styles.wrapper}>
+            <div className={styles.component}>
+                <Component />
+            </div>
+        </div>
+    )
 }
 
 export const ComponentLib: FC<ComponentLibProps> = (props: ComponentLibProps) => {
     return (
         <>
             {componentConfGroup.map((group, index) => {
-                const { groupId, groupName } = group
+                const { groupId, groupName, components } = group
                 return (
                     <div key={groupId}>
                         <Typography.Title
@@ -19,6 +31,7 @@ export const ComponentLib: FC<ComponentLibProps> = (props: ComponentLibProps) =>
                         >
                             {groupName}
                         </Typography.Title>
+                        <div>{components.map(component => genComponent(component))}</div>
                     </div>
                 )
             })}
