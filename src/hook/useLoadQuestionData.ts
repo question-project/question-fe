@@ -8,7 +8,7 @@ import { resetComponents } from '../store/componentsReducer'
 const useLoadQuestionData = () => {
     const { id = '' } = useParams()
 
-    const dispatch = useDispatch
+    const dispatch = useDispatch()
 
     const { loading, data, error, run } = useRequest(
         async (id: string) => {
@@ -23,7 +23,6 @@ const useLoadQuestionData = () => {
         if (!data) return
         const { title, componentList = [] } = data
         dispatch(resetComponents({ componentList }))
-        // dispatch(resetComponents({ componentList }))
     }, [data])
 
     useEffect(() => {

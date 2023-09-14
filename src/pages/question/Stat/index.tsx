@@ -3,11 +3,7 @@ import styles from './index.module.scss'
 import useLoadQuestionData from '../../../hook/useLoadQuestionData'
 
 const Stat: FC = () => {
-    const { data, loading } = useLoadQuestionData()
-    return (
-        <div className={styles.container}>
-            {loading ? 'loading...' : <>{JSON.stringify(data)}</>}
-        </div>
-    )
+    const { loading } = useLoadQuestionData()
+    return <div className={styles.container}>{loading ? 'loading...' : <>{111}</>}</div>
 }
 export default Stat
