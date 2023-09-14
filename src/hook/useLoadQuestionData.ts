@@ -22,7 +22,14 @@ const useLoadQuestionData = () => {
     useEffect(() => {
         if (!data) return
         const { title, componentList = [] } = data
-        dispatch(resetComponents({ componentList }))
+
+        // 获取默认的 selectedId
+        let selectedId = ''
+        // 默认选中第一个组件
+        if (componentList.length) {
+            selectedId = componentList[0].fe_id
+        }
+        dispatch(resetComponents({ componentList, selectedId }))
     }, [data])
 
     useEffect(() => {

@@ -2,9 +2,17 @@ import React, { FC } from 'react'
 import styles from './index.module.scss'
 import useLoadQuestionData from '../../../hook/useLoadQuestionData'
 import { EditCanvas } from './EditCanvas'
+import { useDispatch } from 'react-redux'
+import { changeSelectedId } from '../../../store/componentsReducer'
 
 const Edit: FC = () => {
     const { loading } = useLoadQuestionData()
+
+    const dispatch = useDispatch()
+
+    const clearSelectIed = () => {
+        dispatch(changeSelectedId(''))
+    }
 
     return (
         <div className={styles.container}>
@@ -14,11 +22,9 @@ const Edit: FC = () => {
                 <div className={styles.content}>
                     <div className={styles.left}>left</div>
 
-                    <div className={styles.main}>
+                    <div className={styles.main} onClick={clearSelectIed}>
                         <div className={styles.canvasWrapper}>
-                            <div style={{ height: '900px' }}>
-                                <EditCanvas loading={loading} />
-                            </div>
+                            <EditCanvas loading={loading} />
                         </div>
                     </div>
 

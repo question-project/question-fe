@@ -5,6 +5,7 @@
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '../../components/QuestionComponents'
+import produce from 'immer'
 
 export type ComponentInfoType = {
     // 前端生成的 id
@@ -16,10 +17,12 @@ export type ComponentInfoType = {
 
 export type ComponentsStateType = {
     componentList: Array<ComponentInfoType>
+    selectedId: string
 }
 
 const INIT_STATE: ComponentsStateType = {
     componentList: [],
+    selectedId: '',
 }
 
 export const componentsSlice = createSlice({
@@ -27,15 +30,17 @@ export const componentsSlice = createSlice({
     initialState: INIT_STATE,
     reducers: {
         // 重置所有组件
-        resetComponents: (
-            state: ComponentsStateType,
-            action: PayloadAction<ComponentsStateType>
-        ) => {
+        resetComponents: (_, action: PayloadAction<ComponentsStateType>) => {
             return action.payload
         },
+
+        // 修改 selectedId
+        changeSelectedId: produce((draft: ComponentsStateType, action: PayloadAction<string>) => {
+            draft.selectedId = action.payload
+        }),
     },
 })
 
-export const { resetComponents } = componentsSlice.actions
+export const { resetComponents, changeSelectedId } = componentsSlice.actions
 
 export default componentsSlice.reducer
