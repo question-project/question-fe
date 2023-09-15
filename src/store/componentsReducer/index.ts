@@ -6,6 +6,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '../../components/QuestionComponents'
 import produce from 'immer'
+import { getNextSelectedId } from './utils'
 
 export type ComponentInfoType = {
     // 前端生成的 id
@@ -13,6 +14,7 @@ export type ComponentInfoType = {
     type: string
     title: string
     props: ComponentPropsType
+    isHidden?: boolean
 }
 
 export type ComponentsStateType = {
@@ -55,9 +57,70 @@ export const componentsSlice = createSlice({
                 draft.selectedId = newComponent.fe_id
             }
         ),
+
+        // 修改组件的属性
+        changeComponentProps: produce(
+            (
+                draft: ComponentsStateType,
+                action: PayloadAction<{ fe_id: string; newProps: ComponentPropsType }>
+            ) => {
+                const { fe_id, newProps } = action.payload
+                const currentComp = draft.componentList.find(c => c.fe_id === fe_id)
+                if (currentComp) {
+                    currentComp.props = {
+                        ...currentComp.props,
+                        ...newProps,
+                    }
+                }
+            }
+        ),
+
+        // 删除选中的组件
+        removeSelectedComponent: produce((draft: ComponentsStateType) => {
+            const { componentList, selectedId } = draft
+            // 自动选中下一个组件
+            draft.selectedId = getNextSelectedId(selectedId, componentList)
+            // 删除选中的组件
+            const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
+            componentList.splice(selectedIndex, 1)
+        }),
+
+        // 隐藏、显示组件
+        changeComponentHidden: produce(
+            (
+                draft: ComponentsStateType,
+                action: PayloadAction<{ fe_id: string; isHidden: boolean }>
+            ) => {
+                const { componentList } = draft
+                const { fe_id, isHidden } = action.payload
+
+                // 重新计算 selected
+                let newSelectedId = ''
+                if (isHidden) {
+                    // 隐藏
+                    newSelectedId = getNextSelectedId(fe_id, componentList)
+                } else {
+                    // 显示 就选中当前的组件
+                    newSelectedId = fe_id
+                }
+                draft.selectedId = newSelectedId
+
+                const currentComp = componentList.find(c => c.fe_id === fe_id)
+                if (currentComp) {
+                    currentComp.isHidden = isHidden
+                }
+            }
+        ),
     },
 })
 
-export const { resetComponents, changeSelectedId, addComponent } = componentsSlice.actions
+export const {
+    resetComponents,
+    changeSelectedId,
+    addComponent,
+    changeComponentProps,
+    removeSelectedComponent,
+    changeComponentHidden,
+} = componentsSlice.actions
 
 export default componentsSlice.reducer

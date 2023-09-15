@@ -2,6 +2,7 @@ export type QuestionTitleProps = {
     text?: string
     level?: 1 | 2 | 3
     isCenter?: boolean
+    onChange?: (newProps: QuestionTitleProps) => void
 }
 export const QuestionTitleDefaultProps: QuestionTitleProps = {
     text: '一行标题',

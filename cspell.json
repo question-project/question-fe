@@ -5,7 +5,8 @@
     "dictionaries": [],
     "words": [
         "any",
-        "craco"
+        "craco",
+        "immer"
     ],
     "ignoreWords": [],
     "import": []

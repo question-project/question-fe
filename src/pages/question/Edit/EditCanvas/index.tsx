@@ -28,24 +28,26 @@ export const EditCanvas: FC<EditCanvasProps> = (props: EditCanvasProps) => {
 
     return (
         <div className={styles.canvas}>
-            {componentList.map(item => {
-                const { fe_id } = item
-                const wrapperClassName = classNames(styles.componentWrapper, {
-                    [styles.selected]: fe_id === selectedId,
-                })
-                return (
-                    <div
-                        className={wrapperClassName}
-                        key={fe_id}
-                        onClick={e => {
-                            e.stopPropagation()
-                            dispatch(changeSelectedId(fe_id))
-                        }}
-                    >
-                        <div className={styles.component}>{genComponent(item)}</div>
-                    </div>
-                )
-            })}
+            {componentList
+                .filter(c => !c.isHidden)
+                .map(item => {
+                    const { fe_id } = item
+                    const wrapperClassName = classNames(styles.componentWrapper, {
+                        [styles.selected]: fe_id === selectedId,
+                    })
+                    return (
+                        <div
+                            className={wrapperClassName}
+                            key={fe_id}
+                            onClick={e => {
+                                e.stopPropagation()
+                                dispatch(changeSelectedId(fe_id))
+                            }}
+                        >
+                            <div className={styles.component}>{genComponent(item)}</div>
+                        </div>
+                    )
+                })}
         </div>
     )
 }

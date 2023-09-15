@@ -9,7 +9,7 @@ const QuestionLayout: FC = () => {
     useNavPage(waiting)
     return (
         <div className={styles.container}>
-            <div className={styles.left}> QuestionLayout left</div>
+            <div className={styles.left}></div>
             {/* <div className={styles.right}>{waiting && <Outlet />}</div> */}
             <div className={styles.right}>
                 <Outlet />

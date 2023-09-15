@@ -7,7 +7,11 @@ const useGetComponentInfo = () => {
 
     const { componentList = [], selectedId = '' } = components
 
-    return { componentList, selectedId }
+    return {
+        componentList,
+        selectedId,
+        selectedComponent: componentList.find(c => c.fe_id === selectedId),
+    }
 }
 
 export default useGetComponentInfo

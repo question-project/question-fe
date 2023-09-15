@@ -1,5 +1,6 @@
 import Component from './Components'
 import { QuestionTitleDefaultProps } from './interface'
+import { PropComponent } from './PropComponent'
 
 export * from './interface'
 export * from './Components'
@@ -10,4 +11,5 @@ export default {
     type: 'questionTitle',
     Component,
     defaultProps: QuestionTitleDefaultProps,
+    PropComponent,
 }
