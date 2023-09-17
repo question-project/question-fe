@@ -40,7 +40,7 @@ export const useBindCanvasKeyPress = () => {
     })
 
     // 选中下一个
-    useKeyPress(40, () => {
+    useKeyPress('downarrow', () => {
         isActiveElementValid() && dispatch(selectNextComponent())
     })
 }
