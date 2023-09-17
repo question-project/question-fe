@@ -31,9 +31,10 @@ export const EditCanvas: FC<EditCanvasProps> = (props: EditCanvasProps) => {
             {componentList
                 .filter(c => !c.isHidden)
                 .map(item => {
-                    const { fe_id } = item
+                    const { fe_id, isLocked } = item
                     const wrapperClassName = classNames(styles.componentWrapper, {
                         [styles.selected]: fe_id === selectedId,
+                        [styles.locked]: isLocked,
                     })
                     return (
                         <div

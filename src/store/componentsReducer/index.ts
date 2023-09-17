@@ -6,7 +6,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '../../components/QuestionComponents'
 import produce from 'immer'
-import { getNextSelectedId } from './utils'
+import { getNextSelectedId, insertNewComponent } from './utils'
+import cloneDeep from 'lodash.clonedeep'
+import { nanoid } from 'nanoid'
 
 export type ComponentInfoType = {
     // 前端生成的 id
@@ -15,16 +17,19 @@ export type ComponentInfoType = {
     title: string
     props: ComponentPropsType
     isHidden?: boolean
+    isLocked?: boolean
 }
 
 export type ComponentsStateType = {
     componentList: Array<ComponentInfoType>
     selectedId: string
+    copiedComponent: ComponentInfoType | null
 }
 
 const INIT_STATE: ComponentsStateType = {
     componentList: [],
     selectedId: '',
+    copiedComponent: null,
 }
 
 export const componentsSlice = createSlice({
@@ -45,16 +50,7 @@ export const componentsSlice = createSlice({
         addComponent: produce(
             (draft: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
                 const newComponent = action.payload
-                const { selectedId, componentList } = draft
-                const selectIndex = componentList.findIndex(item => item.fe_id === selectedId)
-                if (selectIndex < 0) {
-                    // 未选中组件
-                    draft.componentList.push(newComponent)
-                } else {
-                    // 插入到当前选中的组件后面
-                    draft.componentList.splice(selectIndex + 1, 0, newComponent)
-                }
-                draft.selectedId = newComponent.fe_id
+                insertNewComponent(draft, newComponent)
             }
         ),
 
@@ -111,6 +107,60 @@ export const componentsSlice = createSlice({
                 }
             }
         ),
+
+        // 锁定 / 解锁 组件
+        toggleComponentLocked: produce(
+            (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string }>) => {
+                const { fe_id } = action.payload
+                const currentComp = draft.componentList.find(c => c.fe_id === fe_id)
+                if (currentComp) {
+                    currentComp.isLocked = !currentComp.isLocked
+                }
+            }
+        ),
+
+        // 拷贝当前选中的组件
+        copySelectedComponent: produce((draft: ComponentsStateType) => {
+            const { selectedId, componentList } = draft
+            const currentComp = componentList.find(c => c.fe_id === selectedId)
+            if (currentComp == null) return
+            // 必须深拷贝
+            draft.copiedComponent = cloneDeep(currentComp)
+        }),
+
+        // 粘贴
+        pasteCopiedComponent: produce((draft: ComponentsStateType) => {
+            const { copiedComponent } = draft
+            if (copiedComponent == null) return
+
+            // 修改 fe_id
+            copiedComponent.fe_id = nanoid()
+            // 插入 copiedComponent
+            insertNewComponent(draft, copiedComponent)
+        }),
+
+        // 选中上一个
+        selectPrevComponent: produce((draft: ComponentsStateType) => {
+            const { selectedId, componentList } = draft
+            const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
+            // 未选中
+            if (selectedIndex < 0) return
+            // 选中了第一个
+            if (selectedIndex === 0) return
+
+            draft.selectedId = componentList[selectedIndex - 1].fe_id
+        }),
+
+        // 选中下一个
+        selectNextComponent: produce((draft: ComponentsStateType) => {
+            const { selectedId, componentList } = draft
+            const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
+            // 未选中
+            if (selectedIndex < 0) return
+            // 选中了最后一个
+            if (selectedIndex + 1 === componentList.length) return
+            draft.selectedId = componentList[selectedIndex + 1].fe_id
+        }),
     },
 })
 
@@ -121,6 +171,11 @@ export const {
     changeComponentProps,
     removeSelectedComponent,
     changeComponentHidden,
+    toggleComponentLocked,
+    copySelectedComponent,
+    pasteCopiedComponent,
+    selectPrevComponent,
+    selectNextComponent,
 } = componentsSlice.actions
 
 export default componentsSlice.reducer

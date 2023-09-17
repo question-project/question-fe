@@ -3,7 +3,7 @@ import { QuestionInputProps } from './interface'
 import { Form, Input } from 'antd'
 
 export const PropComponent: FC<QuestionInputProps> = (props: QuestionInputProps) => {
-    const { title, placeholder, onChange } = props
+    const { title, placeholder, onChange, disabled } = props
 
     const [form] = Form.useForm()
 
@@ -20,6 +20,7 @@ export const PropComponent: FC<QuestionInputProps> = (props: QuestionInputProps)
             initialValues={{ title, placeholder }}
             form={form}
             onValuesChange={handleValuesChange}
+            disabled={disabled}
         >
             <Form.Item
                 label="标题"

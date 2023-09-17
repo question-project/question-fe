@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC } from 'react'
+import React, { FC } from 'react'
 import useGetComponentInfo from '../../../../hook/useGetComponentInfo'
 import {
     ComponentPropsType,
@@ -21,12 +21,12 @@ export const ComponentProp: FC = () => {
 
     if (selectedComponent == null) return <NoProp />
 
-    const { type, props } = selectedComponent
+    const { type, props, isLocked, isHidden } = selectedComponent
 
     const componentConf = getComponentConfByType(type)
 
     if (componentConf == null) return <NoProp />
 
     const { PropComponent } = componentConf
-    return <PropComponent {...props} onChange={changeProps} />
+    return <PropComponent {...props} onChange={changeProps} disabled={isLocked || isHidden} />
 }
