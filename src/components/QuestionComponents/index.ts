@@ -7,10 +7,12 @@ import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
 import QuestionTitleConf, { QuestionTitlePropsType } from './QuestionTitle'
 import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
 import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
+import QuestionTextareaConf, { QuestionTextareaPropsType } from './QuestionTextarea'
 export type ComponentPropsType = QuestionInputPropsType &
     QuestionTitlePropsType &
     QuestionParagraphPropsType &
-    QuestionInfoPropsType
+    QuestionInfoPropsType &
+    QuestionTextareaPropsType
 
 // 组件的配置
 export type ComponentConfType = {
@@ -31,7 +33,7 @@ export const componentConfGroup = [
     {
         groupId: 'inputGroup',
         groupName: '用户输入',
-        components: [QuestionInputConf],
+        components: [QuestionInputConf, QuestionTextareaConf],
     },
 ]
 
@@ -40,6 +42,7 @@ const componentConfList: ComponentConfType[] = [
     QuestionTitleConf,
     QuestionParagraphConf,
     QuestionInfoConf,
+    QuestionTextareaConf,
 ]
 
 export const getComponentConfByType = (type: string) => {
