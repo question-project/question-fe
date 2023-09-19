@@ -11,7 +11,11 @@ const PropComponent: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPro
     const [form] = Form.useForm()
 
     useEffect(() => {
-        //
+        form.setFieldsValue({
+            title,
+            list,
+            isVertical,
+        })
     }, [title, list, isVertical])
 
     const handleChange = () => {

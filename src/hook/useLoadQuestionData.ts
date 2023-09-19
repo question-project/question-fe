@@ -4,6 +4,7 @@ import { useRequest } from 'ahooks'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/componentsReducer'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 const useLoadQuestionData = () => {
     const { id = '' } = useParams()
@@ -21,7 +22,7 @@ const useLoadQuestionData = () => {
     // 根据 data 设置 store
     useEffect(() => {
         if (!data) return
-        const { title, componentList = [] } = data
+        const { title = '', desc = '', css = '', js = '', componentList = [] } = data
 
         // 获取默认的 selectedId
         let selectedId = ''
@@ -29,7 +30,11 @@ const useLoadQuestionData = () => {
         if (componentList.length) {
             selectedId = componentList[0].fe_id
         }
+
+        // 把 componentList 存储到 redux 中
         dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
+        // 将页面信息存储到 redux 中
+        dispatch(resetPageInfo({ title, desc, js, css }))
     }, [data])
 
     useEffect(() => {
