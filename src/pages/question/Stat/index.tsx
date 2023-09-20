@@ -4,6 +4,6 @@ import useLoadQuestionData from '../../../hook/useLoadQuestionData'
 
 const Stat: FC = () => {
     const { loading } = useLoadQuestionData()
-    return <div className={styles.container}>{loading ? 'loading...' : <>{111}</>}</div>
+    return <div className={styles.container}>{loading ? 'loading...' : <>统计页面</>}</div>
 }
 export default Stat
