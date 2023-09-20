@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import { Button, Input, Space, Typography } from 'antd'
 import { EditOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons'
@@ -64,6 +64,10 @@ const SaveButton: FC = () => {
         event.preventDefault()
         !loading && save()
     })
+
+    useEffect(() => {
+        save()
+    }, [pageInfo, componentList])
 
     return (
         <Button onClick={save} disabled={loading} icon={loading ? <LoadingOutlined /> : null}>
