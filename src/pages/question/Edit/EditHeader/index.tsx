@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react'
+import React, { ChangeEvent, FC, useState } from 'react'
 import styles from './index.module.scss'
 import { Button, Input, Space, Typography } from 'antd'
 import { EditOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons'
@@ -8,7 +8,7 @@ import { useGetPageInfo } from '../../../../hook/useGetPageInfo'
 import { useDispatch } from 'react-redux'
 import { changePageTitle } from '../../../../store/pageInfoReducer'
 import useGetComponentInfo from '../../../../hook/useGetComponentInfo'
-import { useKeyPress, useRequest } from 'ahooks'
+import { useDebounceEffect, useKeyPress, useRequest } from 'ahooks'
 import { updateQuestionService } from '../../../../services/question'
 
 // 显示和修改问卷标题
@@ -65,9 +65,13 @@ const SaveButton: FC = () => {
         !loading && save()
     })
 
-    useEffect(() => {
-        save()
-    }, [pageInfo, componentList])
+    useDebounceEffect(
+        () => {
+            save()
+        },
+        [pageInfo, componentList],
+        { wait: 1000 }
+    )
 
     return (
         <Button onClick={save} disabled={loading} icon={loading ? <LoadingOutlined /> : null}>
