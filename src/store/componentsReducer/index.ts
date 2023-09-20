@@ -9,6 +9,7 @@ import produce from 'immer'
 import { getNextSelectedId, insertNewComponent } from './utils'
 import cloneDeep from 'lodash.clonedeep'
 import { nanoid } from 'nanoid'
+import { arrayMove } from '@dnd-kit/sortable'
 
 export type ComponentInfoType = {
     // 前端生成的 id
@@ -175,6 +176,18 @@ export const componentsSlice = createSlice({
                 }
             }
         ),
+
+        // 移动组件位置
+        moveComponent: produce(
+            (
+                draft: ComponentsStateType,
+                action: PayloadAction<{ oldIndex: number; newIndex: number }>
+            ) => {
+                const { componentList } = draft
+                const { oldIndex, newIndex } = action.payload
+                draft.componentList = arrayMove(componentList, oldIndex, newIndex)
+            }
+        ),
     },
 })
 
@@ -191,6 +204,7 @@ export const {
     selectPrevComponent,
     selectNextComponent,
     changeComponentTitle,
+    moveComponent,
 } = componentsSlice.actions
 
 export default componentsSlice.reducer
