@@ -7,6 +7,7 @@ import {
     selectNextComponent,
     selectPrevComponent,
 } from '../store/componentsReducer'
+import { ActionCreators } from 'redux-undo'
 
 // 当前鼠标选中的元素 判断 activeElement 是否合法
 const isActiveElementValid = () => {
@@ -45,4 +46,28 @@ export const useBindCanvasKeyPress = () => {
     useKeyPress('downarrow', () => {
         isActiveElementValid() && dispatch(selectNextComponent())
     })
+
+    // 撤销
+    useKeyPress(
+        ['ctrl.z', 'meta.z'],
+        () => {
+            isActiveElementValid() && dispatch(ActionCreators.undo())
+        },
+        {
+            // 严格匹配
+            exactMatch: true,
+        }
+    )
+
+    // 重做
+    useKeyPress(
+        ['ctrl.shift.z', 'meta.shift.z'],
+        () => {
+            isActiveElementValid() && dispatch(ActionCreators.redo())
+        },
+        {
+            // 严格匹配
+            exactMatch: true,
+        }
+    )
 }

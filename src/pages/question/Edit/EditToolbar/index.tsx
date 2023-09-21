@@ -23,6 +23,7 @@ import {
 } from '../../../../store/componentsReducer'
 import useGetComponentInfo from '../../../../hook/useGetComponentInfo'
 import { useBindCanvasKeyPress } from '../../../../hook/useBindCanvasKeyPress'
+import { ActionCreators } from 'redux-undo'
 
 export const EditToolbar: FC = () => {
     useBindCanvasKeyPress()
@@ -70,11 +71,11 @@ export const EditToolbar: FC = () => {
     }
 
     const undo = () => {
-        //
+        dispatch(ActionCreators.undo())
     }
 
     const redo = () => {
-        //
+        dispatch(ActionCreators.redo())
     }
 
     return (

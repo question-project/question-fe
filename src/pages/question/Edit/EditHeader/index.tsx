@@ -74,7 +74,7 @@ const SaveButton: FC = () => {
     )
 
     return (
-        <Button onClick={save} disabled={loading} icon={loading ? <LoadingOutlined /> : null}>
+        <Button onClick={() => save} disabled={loading} icon={loading ? <LoadingOutlined /> : null}>
             保存
         </Button>
     )
