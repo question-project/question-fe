@@ -11,8 +11,10 @@ import {
 // 当前鼠标选中的元素 判断 activeElement 是否合法
 const isActiveElementValid = () => {
     const activeEl = document.activeElement
-    // 光标没有 focus 到 input
+    // 光标没有 focus 到 input 没选中
     if (activeEl === document.body) return true
+    // 解决 dnd-kit 选中不能使用快捷键的问题
+    if (activeEl?.matches('div[role="button"]')) return true
     return false
 }
 
