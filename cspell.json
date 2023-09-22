@@ -6,7 +6,8 @@
     "words": [
         "any",
         "craco",
-        "immer"
+        "immer",
+        "QRCode"
     ],
     "ignoreWords": [],
     "import": []
