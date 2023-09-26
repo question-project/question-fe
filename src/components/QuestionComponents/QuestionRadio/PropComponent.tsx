@@ -3,6 +3,7 @@ import { OptionType, QuestionRadioPropsType } from './interface'
 import { Button, Checkbox, Form, Input, Select, Space } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { nanoid } from 'nanoid'
+
 const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) => {
     const { onChange, disabled, title, isVertical, options = [], value } = props
 

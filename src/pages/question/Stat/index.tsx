@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTitle } from 'ahooks'
 import { StatHeader } from './StatHeader'
 import { ComponentList } from './ComponentList'
+import { PageStat } from './PageStat'
+import { ChartStat } from './ChartStat'
 
 const Stat: FC = () => {
     const nav = useNavigate()
@@ -35,17 +37,25 @@ const Stat: FC = () => {
                 </div>
             )
         }
+        const comProps = {
+            selectedComponentId,
+            setSelectedComponentId,
+            setSelectedComponentType,
+        }
         return (
             <>
                 <div className={styles.left}>
-                    <ComponentList
+                    <ComponentList {...comProps} />
+                </div>
+                <div className={styles.main}>
+                    <PageStat {...comProps} />
+                </div>
+                <div className={styles.right}>
+                    <ChartStat
                         selectedComponentId={selectedComponentId}
-                        setSelectedComponentId={setSelectedComponentId}
-                        setSelectedComponentType={setSelectedComponentType}
+                        selectedComponentType={selectedComponentType}
                     />
                 </div>
-                <div className={styles.main}></div>
-                <div className={styles.right}></div>
             </>
         )
     }
