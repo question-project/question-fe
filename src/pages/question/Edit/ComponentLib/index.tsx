@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { ComponentConfType, componentConfGroup } from '../../../../components/QuestionComponents'
 import { Typography } from 'antd'
 import styles from './index.module.scss'
@@ -12,21 +12,18 @@ interface ComponentLibProps {
 const genComponent = (component: ComponentConfType) => {
     const { Component, title, type, defaultProps } = component
     const dispath = useDispatch()
+    const onClick = useCallback(() => {
+        dispath(
+            addComponent({
+                fe_id: nanoid(),
+                title,
+                type,
+                props: defaultProps,
+            })
+        )
+    }, [])
     return (
-        <div
-            className={styles.wrapper}
-            onClick={() => {
-                dispath(
-                    addComponent({
-                        fe_id: nanoid(),
-                        title,
-                        type,
-                        props: defaultProps,
-                    })
-                )
-            }}
-            key={type}
-        >
+        <div className={styles.wrapper} onClick={onClick} key={type}>
             <div className={styles.component}>
                 <Component />
             </div>

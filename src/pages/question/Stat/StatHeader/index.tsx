@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useMemo, useRef } from 'react'
 import styles from './index.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Input, InputRef, Popover, Space, Tooltip, Typography, message } from 'antd'
@@ -22,9 +22,13 @@ export const StatHeader: FC = () => {
         message.success('拷贝成功')
     }
 
-    const getLinkAndQRCode = () => {
-        if (!isPublished) return
-
+    /**
+     * 使用 useMemo:
+     * 1. 依赖项是否经常变化，不经常变就适合使用
+     * 2. 缓存的元素是否创建成本较高
+     */
+    const LinkAndQrCodeElem = useMemo(() => {
+        if (!isPublished) return null
         // 拼接 url 需要参考 c 端的 url 的规则
         const url = `http://localhost:8000/question/${id}`
 
@@ -45,7 +49,7 @@ export const StatHeader: FC = () => {
                 </Popover>
             </Space>
         )
-    }
+    }, [id, isPublished])
 
     return (
         <div className={styles.wrapper}>
@@ -58,7 +62,7 @@ export const StatHeader: FC = () => {
                         <Typography.Title>{title}</Typography.Title>
                     </Space>
                 </div>
-                <div className={styles.main}>{getLinkAndQRCode()}</div>
+                <div className={styles.main}>{LinkAndQrCodeElem}</div>
                 <div className={styles.right}>
                     <Button type="primary" onClick={() => nav(`/question/edit/${id}`)}>
                         编辑问卷
